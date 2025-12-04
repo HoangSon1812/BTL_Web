@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useCart } from "../store/CartContext";
 import { useAuth } from "../store/AuthContext";
+import { useWishlist } from "../store/WishlistContext";
+import { ShoppingCart, Heart, User, Search, FileText, MapPin, Phone, LogOut } from "lucide-react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   all: "Tất cả",
@@ -11,10 +13,6 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 type CategoryKey = keyof typeof CATEGORY_LABELS;
-
-import { useWishlist } from "../store/WishlistContext";
-
-// ...
 
 type NavbarProps = {
   activeCategory: CategoryKey;
@@ -50,12 +48,12 @@ const Navbar: React.FC<NavbarProps> = ({
       <div className="bg-red-600 text-white text-xs sm:text-sm">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center gap-x-4 gap-y-1 px-3 py-1">
           <span className="font-semibold">MiniMart Online</span>
-          <span className="hidden sm:inline">Mở cửa 7:00 - 22:00 mỗi ngày</span>
+
           <span className="flex items-center gap-1">
-            <span className="text-yellow-200">📍</span> Hà Đông - Hà Nội
+            <MapPin size={14} className="text-yellow-200" /> Hà Đông - Hà Nội
           </span>
           <span className="flex items-center gap-1 ml-auto">
-            <span className="text-yellow-200">📞</span> 0123 456 789
+            <Phone size={14} className="text-yellow-200" /> 0123 456 789
           </span>
         </div>
       </div>
@@ -85,9 +83,9 @@ const Navbar: React.FC<NavbarProps> = ({
               />
               <button
                 type="submit"
-                className="bg-red-600 px-4 text-xs sm:text-sm font-semibold text-white hover:bg-red-700 transition"
+                className="bg-red-600 px-4 text-xs sm:text-sm font-semibold text-white hover:bg-red-700 transition flex items-center justify-center"
               >
-                Tìm kiếm
+                <Search size={18} />
               </button>
             </div>
           </form>
@@ -98,7 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 onClick={onOpenOrderHistory}
                 className="border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 flex items-center gap-1 transition"
               >
-                <span>🧾</span> <span className="hidden sm:inline">Đơn hàng</span>
+                <FileText size={16} /> <span className="hidden sm:inline">Đơn hàng</span>
               </button>
             )}
 
@@ -106,7 +104,7 @@ const Navbar: React.FC<NavbarProps> = ({
               onClick={onOpenWishlist}
               className="border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 flex items-center gap-1 transition relative"
             >
-              <span>❤️</span> <span className="hidden sm:inline">Yêu thích</span>
+              <Heart size={16} /> <span className="hidden sm:inline">Yêu thích</span>
               {totalWishlistItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {totalWishlistItems}
@@ -118,7 +116,7 @@ const Navbar: React.FC<NavbarProps> = ({
               onClick={toggleCart}
               className="border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 flex items-center gap-1 transition relative"
             >
-              <span>🛒</span> <span className="hidden sm:inline">Giỏ hàng</span>
+              <ShoppingCart size={16} /> <span className="hidden sm:inline">Giỏ hàng</span>
               {totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {totalItems}
@@ -128,20 +126,20 @@ const Navbar: React.FC<NavbarProps> = ({
 
             {user ? (
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-gray-700">{user.username}</span>
+                <span className="font-semibold text-gray-700 flex items-center gap-1"><User size={16} /> {user.username}</span>
                 <button
                   onClick={logout}
-                  className="text-red-600 font-semibold hover:underline"
+                  className="text-red-600 font-semibold hover:underline flex items-center gap-1"
                 >
-                  Đăng xuất
+                  <LogOut size={16} /> Đăng xuất
                 </button>
               </div>
             ) : (
               <button
                 onClick={onOpenAuth}
-                className="text-red-600 font-semibold hover:underline"
+                className="text-red-600 font-semibold hover:underline flex items-center gap-1"
               >
-                Đăng nhập
+                <User size={16} /> Đăng nhập
               </button>
             )}
           </div>

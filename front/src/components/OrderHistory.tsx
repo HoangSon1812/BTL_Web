@@ -1,6 +1,6 @@
 import React from 'react';
 import { useOrder } from '../store/OrderContext';
-import { Package, MapPin, Calendar, DollarSign } from 'lucide-react';
+import { Package, MapPin, Calendar, DollarSign, X } from 'lucide-react';
 
 interface OrderHistoryProps {
   isOpen: boolean;
@@ -22,9 +22,9 @@ export const OrderHistory: React.FC<OrderHistoryProps> = ({ isOpen, onClose }) =
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors text-2xl leading-none"
+            className="text-gray-400 hover:text-red-600 transition-colors p-1 hover:bg-red-50 rounded-full"
           >
-            &times;
+            <X size={20} />
           </button>
         </div>
 
@@ -64,7 +64,7 @@ export const OrderHistory: React.FC<OrderHistoryProps> = ({ isOpen, onClose }) =
                           <span className="font-medium text-gray-800">{item.tenMatHang}</span>
                         </div>
                         <span className="text-gray-600">
-                          {(item.donGia * item.quantity).toLocaleString()} ₫
+                          {((item.donGia || 0) * item.quantity).toLocaleString()} ₫
                         </span>
                       </div>
                     ))}

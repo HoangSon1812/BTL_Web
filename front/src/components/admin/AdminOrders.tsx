@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./AdminOrders.css";
 
 interface Order {
   id: number;
@@ -17,16 +16,26 @@ export const AdminOrders: React.FC = () => {
 
   // 🟦 Lấy danh sách order từ DB
   const fetchOrders = async () => {
-    const res = await fetch("http://localhost:3000/api/order/all");
-    const data = await res.json();
-    setOrders(data);
+    try {
+      const res = await fetch("http://localhost:3000/api/order/all");
+      if (!res.ok) throw new Error("Failed to fetch orders");
+      const data = await res.json();
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
   };
 
   // 🟦 Lấy chi tiết items của order
   const fetchOrderItems = async (orderId: number) => {
-    const res = await fetch(`http://localhost:3000/api/order/${orderId}/items`);
-    const data = await res.json();
-    setOrderItems(data);
+    try {
+      const res = await fetch(`http://localhost:3000/api/order/${orderId}/items`);
+      if (!res.ok) throw new Error("Failed to fetch order items");
+      const data = await res.json();
+      setOrderItems(data);
+    } catch (error) {
+      console.error("Error fetching order items:", error);
+    }
   };
 
   useEffect(() => {
@@ -34,46 +43,48 @@ export const AdminOrders: React.FC = () => {
   }, []);
 
   return (
-    <div className="admin-orders">
-      <h2>Lịch sử đơn hàng (Từ Database)</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Lịch sử đơn hàng (Từ Database)</h2>
 
       {/* 🟩 LIST ORDERS */}
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Họ tên</th>
-            <th>SĐT</th>
-            <th>Tổng tiền</th>
-            <th>Ngày đặt</th>
-            <th>Xem</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {orders.map(order => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.full_name}</td>
-              <td>{order.phone}</td>
-              <td>{order.total_price}</td>
-              <td>{order.order_date}</td>
-              <td>
-                <button
-                  onClick={() => {
-                    setSelectedOrder(order.id);
-                    fetchOrderItems(order.id);
-                  }}
-                >
-                  Chi tiết
-                </button>
-              </td>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="p-4 font-semibold text-gray-600">ID</th>
+              <th className="p-4 font-semibold text-gray-600">Họ tên</th>
+              <th className="p-4 font-semibold text-gray-600">SĐT</th>
+              <th className="p-4 font-semibold text-gray-600">Tổng tiền</th>
+              <th className="p-4 font-semibold text-gray-600">Ngày đặt</th>
+              <th className="p-4 font-semibold text-gray-600">Xem</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      {/* 🟩 ORDER DETAIL */}
+          <tbody>
+            {orders.map(order => (
+              <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td className="p-4 text-gray-700">{order.id}</td>
+                <td className="p-4 text-gray-700">{order.full_name}</td>
+                <td className="p-4 text-gray-700">{order.phone}</td>
+                <td className="p-4 font-medium text-red-600">{order.total_price?.toLocaleString()}đ</td>
+                <td className="p-4 text-gray-500">{order.order_date}</td>
+                <td className="p-4">
+                  <button
+                    onClick={() => {
+                      setSelectedOrder(order.id);
+                      fetchOrderItems(order.id);
+                    }}
+                    className="px-3 py-1.5 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium"
+                  >
+                    Chi tiết
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       {/* 🟩 ORDER DETAIL MODAL */}
       {selectedOrder && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">

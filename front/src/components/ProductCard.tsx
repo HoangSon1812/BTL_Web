@@ -3,7 +3,7 @@ import { Product } from "../types/product";
 import { useCart } from "../store/CartContext";
 import { useWishlist } from "../store/WishlistContext";
 import { useToast } from "../store/ToastContext";
-// import { ShoppingCart, Heart } from "lucide-react";
+import { ShoppingCart, Heart, Plus } from "lucide-react";
 
 type ProductCardProps = {
   product: Product;
@@ -54,7 +54,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
     e.stopPropagation();
     addToCart(product);
     showToast(`Đã thêm "${name}" vào giỏ hàng`, 'success');
-    console.log('Add to cart clicked');
   };
 
   return (
@@ -84,19 +83,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
           : "bg-white/80 backdrop-blur-sm text-gray-400 hover:text-red-500 hover:bg-white opacity-0 group-hover:opacity-100"
           }`}
       >
-        {/* <Heart size={16} /> */}
-        <span>{isLiked ? '♥' : '♡'}</span>
+        <Heart size={16} fill={isLiked ? "currentColor" : "none"} />
       </button>
 
-      <div className="relative h-48 overflow-hidden bg-white p-4 flex items-center justify-center">
+      <div className="relative h-64 overflow-hidden bg-white flex items-center justify-center p-4">
         <img
           src={product.image_url?.startsWith('http') ? product.image_url : `/images/${product.image_url}`}
           alt={name}
-          className="max-w-full max-h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.onerror = null;
-            target.src = "https://via.placeholder.com/300x200?text=No+Image";
+            target.src = "https://via.placeholder.com/300x300?text=No+Image";
           }}
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
@@ -127,23 +125,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
 
           <button
             onClick={handleAdd}
-            className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all shadow-md active:scale-95"
+            className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all shadow-md active:scale-95"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="8" cy="21" r="1" />
-              <circle cx="19" cy="21" r="1" />
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-            </svg>
+            <Plus size={16} />
             <span className="text-xs font-bold uppercase tracking-wider">Thêm</span>
           </button>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { ArrowLeft } from 'lucide-react';
 
 const PAGE_CONTENT: Record<string, { title: string; content: React.ReactNode; image: string }> = {
     'about': {
@@ -156,6 +157,16 @@ export const InfoPage: React.FC = () => {
                         )}
                         <div className="prose prose-lg text-gray-600">
                             {data.content}
+                        </div>
+
+                        <div className="mt-12 pt-8 border-t border-gray-100 flex justify-center">
+                            <button
+                                onClick={handleNavigateHome}
+                                className="bg-red-600 text-white px-8 py-3 rounded-full font-bold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl flex items-center gap-2"
+                            >
+                                <ArrowLeft size={20} />
+                                <span>Quay về trang chủ</span>
+                            </button>
                         </div>
                     </div>
                 </div>

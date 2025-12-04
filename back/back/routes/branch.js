@@ -15,7 +15,7 @@ router.get("/all", (req, res) => {
 
   db.query(sql, (err, rows) => {
     if (err) {
-      console.log("SQL ERROR:", err);
+      console.error("SQL ERROR:", err);
       return res.status(500).json({ msg: "Lỗi lấy danh sách chi nhánh" });
     }
 

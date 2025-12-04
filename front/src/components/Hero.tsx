@@ -20,32 +20,32 @@ const Hero: React.FC = () => {
                     Đồ gia dụng, thực phẩm tươi sống, và nhiều hơn thế nữa.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                     <button
                         onClick={() => {
                             const element = document.getElementById('product-list');
                             element?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="px-8 py-4 bg-white text-red-700 font-bold rounded-full hover:bg-gray-100 transition shadow-lg transform hover:-translate-y-1"
+                        className="px-8 py-4 bg-white text-red-700 font-bold rounded-full hover:bg-gray-100 transition shadow-lg transform hover:-translate-y-1 animate-float"
                     >
                         Mua ngay
                     </button>
                 </div>
 
-                <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center w-full max-w-4xl">
-                    <div className="flex flex-col items-center">
+                <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center w-full max-w-4xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                    <div className="flex flex-col items-center hover:scale-110 transition-transform duration-300">
                         <div className="text-3xl font-bold text-yellow-300">100%</div>
                         <div className="text-sm text-red-100">Chính hãng</div>
                     </div>
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center hover:scale-110 transition-transform duration-300">
                         <div className="text-3xl font-bold text-yellow-300">24/7</div>
                         <div className="text-sm text-red-100">Hỗ trợ</div>
                     </div>
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center hover:scale-110 transition-transform duration-300">
                         <div className="text-3xl font-bold text-yellow-300">Free</div>
                         <div className="text-sm text-red-100">Vận chuyển</div>
                     </div>
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center hover:scale-110 transition-transform duration-300">
                         <div className="text-3xl font-bold text-yellow-300">30</div>
                         <div className="text-sm text-red-100">Ngày đổi trả</div>
                     </div>

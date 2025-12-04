@@ -64,7 +64,7 @@ export const Cart: React.FC = () => {
                 <div className="w-20 h-20 shrink-0 bg-gray-50 rounded-lg overflow-hidden border border-gray-100">
                   <img
                     src={item.image_url ? (item.image_url.startsWith('http') ? item.image_url : `/images/${item.image_url}`) : "https://via.placeholder.com/80"}
-                    alt={item.tenMatHang}
+                    alt={item.tenMatHang || 'Sản phẩm'}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -124,7 +124,7 @@ export const Cart: React.FC = () => {
             </div>
 
             <button
-              className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-red-600 transition-all shadow-lg active:scale-[0.98]"
+              className="w-full bg-red-600 text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-red-700 transition-all shadow-lg active:scale-[0.98]"
               onClick={handleCheckout}
             >
               {user ? 'Thanh toán ngay' : 'Đăng nhập để thanh toán'}

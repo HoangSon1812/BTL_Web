@@ -27,8 +27,11 @@ const ProductList: React.FC<ProductListProps> = ({
   onCategoryChange,
   onProductClick
 }) => {
+  // Sort state
+  const [sortOption, setSortOption] = React.useState<'default' | 'price-asc' | 'price-desc' | 'name-asc'>('default');
+
   const filtered = useMemo(() => {
-    let list = products
+    let list = [...products] // Create a copy to sort safely
 
     if (activeCategory !== 'all') {
       list = list.filter(p => p.category === activeCategory)
@@ -45,17 +48,49 @@ const ProductList: React.FC<ProductListProps> = ({
       })
     }
 
+    // Sorting logic
+    switch (sortOption) {
+      case 'price-asc':
+        list.sort((a, b) => (a.donGia || 0) - (b.donGia || 0));
+        break;
+      case 'price-desc':
+        list.sort((a, b) => (b.donGia || 0) - (a.donGia || 0));
+        break;
+      case 'name-asc':
+        list.sort((a, b) => (a.tenMatHang || '').localeCompare(b.tenMatHang || ''));
+        break;
+      default:
+        // Keep default order (by ID usually)
+        break;
+    }
+
     return list
-  }, [products, activeCategory, search])
+  }, [products, activeCategory, search, sortOption])
 
   // Pagination state
   const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 8;
 
-  // Reset page when category or search changes
+  // Reset page when category, search, or sort changes
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [activeCategory, search]);
+  }, [activeCategory, search, sortOption]);
+
+  // Scroll to top of product list when page changes
+  React.useEffect(() => {
+    const element = document.getElementById('product-list');
+    if (element) {
+      // Calculate position accounting for sticky header (approx 120px)
+      const headerOffset = 120;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  }, [currentPage]);
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const paginatedProducts = filtered.slice(
@@ -94,6 +129,21 @@ const ProductList: React.FC<ProductListProps> = ({
           <h2 className="text-lg sm:text-xl font-bold text-gray-900">
             Sản phẩm
           </h2>
+
+          <div className="flex items-center gap-2">
+            <label htmlFor="sort" className="text-sm text-gray-600">Sắp xếp:</label>
+            <select
+              id="sort"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value as any)}
+              className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+            >
+              <option value="default">Mặc định</option>
+              <option value="price-asc">Giá: Thấp đến Cao</option>
+              <option value="price-desc">Giá: Cao đến Thấp</option>
+              <option value="name-asc">Tên: A-Z</option>
+            </select>
+          </div>
         </div>
 
         {filtered.length === 0 ? (
@@ -103,12 +153,17 @@ const ProductList: React.FC<ProductListProps> = ({
         ) : (
           <>
             <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
-              {paginatedProducts.map(p => (
-                <ProductCard
+              {paginatedProducts.map((p, index) => (
+                <div
                   key={p.id}
-                  product={p}
-                  onClick={() => onProductClick(p)}
-                />
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <ProductCard
+                    product={p}
+                    onClick={() => onProductClick(p)}
+                  />
+                </div>
               ))}
             </div>
 

@@ -56,19 +56,19 @@ export const InventoryOverview: React.FC = () => {
       donGia: Number(editingProduct.donGia)
     };
 
-    console.log("Saving product:", payload);
+    // console.log("Saving product:", payload);
 
     try {
-      console.log("Sending request to:", url, "Method:", method, "Body:", payload);
+      // console.log("Sending request to:", url, "Method:", method, "Body:", payload);
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      console.log("Response status:", res.status, "OK:", res.ok);
+      // console.log("Response status:", res.status, "OK:", res.ok);
       const data = await res.json();
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
 
       if (res.ok) {
         // alert(isEdit ? "Cập nhật thành công!" : "Thêm mới thành công!");

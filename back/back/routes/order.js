@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
     [full_name, address, phone, total_price],
     (err, orderResult) => {
       if (err) {
-        console.log("Error inserting order:", err);
+        console.error("Error inserting order:", err);
         return res.status(500).json({ msg: "Lỗi tạo đơn hàng" });
       }
 
@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
           itemSql,
           [orderId, item.product_id, item.quantity, item.price],
           (err2) => {
-            if (err2) console.log("Error inserting order_item:", err2);
+            if (err2) console.error("Error inserting order_item:", err2);
           }
         );
 
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
         `;
 
         db.query(updateStockSql, [item.quantity, item.product_id], (err3) => {
-          if (err3) console.log("Error updating stock:", err3);
+          if (err3) console.error("Error updating stock:", err3);
         });
       });
 
@@ -70,7 +70,7 @@ router.get("/all", (req, res) => {
 
   db.query(sql, (err, orders) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).json({ msg: "Lỗi khi lấy danh sách đơn hàng" });
     }
 
@@ -95,7 +95,7 @@ router.get("/:orderId/items", (req, res) => {
 
   db.query(sql, [orderId], (err, items) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).json({ msg: "Lỗi lấy chi tiết đơn hàng" });
     }
 

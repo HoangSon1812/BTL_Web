@@ -13,7 +13,8 @@ import { AuthProvider, useAuth } from './store/AuthContext'
 import { CartProvider } from './store/CartContext'
 import { OrderProvider } from './store/OrderContext'
 import { WishlistProvider } from './store/WishlistContext'
-import { productsMock } from './data/productsMock'
+import SkeletonCard from './components/SkeletonCard'
+
 
 import { AdminDashboard } from './pages/AdminDashboard'
 import './styles/global.css'
@@ -67,8 +68,8 @@ const UserUI: React.FC = () => {
         const data = await res.json()
         setProducts(data)
       } catch (err) {
-        console.warn('Backend lỗi → dùng mock data')
-        setProducts(productsMock)
+        console.error('Backend lỗi:', err)
+        setError('Không thể tải danh sách sản phẩm.')
       } finally {
         setLoading(false)
       }
@@ -81,7 +82,7 @@ const UserUI: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar
         activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
+        onCategoryChange={(cat) => setActiveCategory(cat as any)}
         search={search}
         onSearchChange={setSearch}
         onOpenAuth={() => setIsAuthOpen(true)}
@@ -98,14 +99,20 @@ const UserUI: React.FC = () => {
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         product={selectedProduct}
+        allProducts={products}
+        onProductSelect={setSelectedProduct}
       />
 
       {activeCategory === 'all' && !search && <Hero />}
 
       {loading ? (
-        <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
-          Đang tải sản phẩm...
-        </div>
+        <section className="max-w-6xl mx-auto px-4 py-5 w-full">
+          <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </section>
       ) : (
         <ProductList
           products={products}
